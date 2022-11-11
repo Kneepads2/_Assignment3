@@ -26,18 +26,22 @@ class Account:
     def withdraw(self):
         print("")
 
-class Bank:
+class Bank(Account):
     i = 3
     def __init__(self,_bankName):
         self._bankName = ["Savings Account","Checquing Account","","",""]
-        _bankName = self._bankName[i]
+        _bankName = self._bankName[3]
         return _bankName
 
     def openAccount(self):
         print("")
 
     def searchAccount(self):
-        print("")
+        accountNum = str(input("What is the account number of the account you wish to enter? "))
+        if (accountNum != self.accountNumber):
+            while (accountNum != self.accountNumber):
+                if (accountNum == self.accountNumber):
+                    print("")
 
 class SavingsAccount:
 
@@ -55,12 +59,12 @@ class ChecquingAccount:
     def withdraw(self):
         print("")
 
-class Program(Account,Bank,ChecquingAccount,SavingsAccount):
+class Program(Bank,SavingsAccount,ChecquingAccount):
     def __init__(self):
         print("")
 
     def showMainMenu(self):
-        print("\nTo open a new account, type 'OPEN'\n To search for an existing account, type 'SEARCH'\n To exit the program, type 'EXIT'\n")
+        print("\nTo open a new account, type 'OPEN'\nTo enter an existing account, type 'SEARCH'\nTo exit the program, type 'EXIT'\n")
         mainMenu = str(input("Enter your desired action: "))
         if (mainMenu.upper() != "OPEN" or mainMenu.upper() != "SEARCH" or mainMenu.upper() != "EXIT"):
             while (mainMenu.upper() != "OPEN" or mainMenu.upper() != "SEARCH" or mainMenu.upper() != "EXIT"):
@@ -68,9 +72,14 @@ class Program(Account,Bank,ChecquingAccount,SavingsAccount):
                 if (mainMenu.upper() == "OPEN"):
                     Bank.openAccount()
                     break
+
                 elif (mainMenu.upper() == "SEARCH"):
                     Bank.searchAccount
                     break
+
+                elif (mainMenu.upper() == "HELP"):
+                    print("\nTo open a new account, type 'OPEN'\nTo enter an existing account, type 'SEARCH'\nTo exit the program, type 'EXIT'\n")
+
                 elif (mainMenu.upper() == "EXIT"):
                     print("Exiting program.........")
                     time.sleep(1.2)
