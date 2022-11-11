@@ -1,47 +1,7 @@
 import time
 
+#ok so does Program inherit all the other classes or does Account do
 
-class Account:
-    def __init__(self,_accountNumber,_accountHolderName,_rateOfInterest,_currentBalance):
-        self.accountNumber = _accountNumber
-        self.accountHolderName = _accountHolderName
-        self.rateOfInterest = _rateOfInterest
-        self.currentBalance = _currentBalance
-
-    def getAccountNumber(self):
-        return self.accountNumber
-
-    def getAccountHolderName(self):
-        return self.accountHolderName
-
-    def getRateOfInterest(self):
-        return self.rateOfInterest
-
-    def getCurrentBalance(self):
-        return self.currentBalance
-
-    def disposit(self):
-        print("")
-
-    def withdraw(self):
-        print("")
-
-class Bank(Account):
-    i = 3
-    def __init__(self,_bankName):
-        self._bankName = ["Savings Account","Checquing Account","","",""]
-        _bankName = self._bankName[3]
-        return _bankName
-
-    def openAccount(self):
-        print("")
-
-    def searchAccount(self):
-        accountNum = str(input("What is the account number of the account you wish to enter? "))
-        if (accountNum != self.accountNumber):
-            while (accountNum != self.accountNumber):
-                if (accountNum == self.accountNumber):
-                    print("")
 
 class SavingsAccount:
 
@@ -59,7 +19,24 @@ class ChecquingAccount:
     def withdraw(self):
         print("")
 
-class Program(Bank,SavingsAccount,ChecquingAccount):
+class Bank():
+    i = 3
+    def __init__(self,_bankName):
+        self._bankName = ["Savings Account","Checquing Account","","",""]
+        _bankName = self._bankName[3]
+        return _bankName
+
+    def openAccount(self):
+        print("")
+
+    def searchAccount(self):
+        accountNum = str(input("What is the account number of the account you wish to enter? "))
+        if (accountNum != 2):
+            while (accountNum != 2):
+                if (accountNum == 2):
+                    print("")
+
+class Program(Bank):
     def __init__(self):
         print("")
 
@@ -99,6 +76,31 @@ class Program(Bank,SavingsAccount,ChecquingAccount):
         print("")
 
     def run(self):
+        print("")
+
+class Account(Program):
+    def __init__(self,_accountNumber,_accountHolderName,_rateOfInterest,_currentBalance):
+        self.accountNumber = _accountNumber
+        self.accountHolderName = _accountHolderName
+        self.rateOfInterest = _rateOfInterest
+        self.currentBalance = _currentBalance
+
+    def getAccountNumber(self):
+        return self.accountNumber
+
+    def getAccountHolderName(self):
+        return self.accountHolderName
+
+    def getRateOfInterest(self):
+        return self.rateOfInterest
+
+    def getCurrentBalance(self):
+        return self.currentBalance
+
+    def disposit(self):
+        print("")
+
+    def withdraw(self):
         print("")
 
 p = Program()
