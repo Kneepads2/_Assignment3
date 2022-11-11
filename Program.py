@@ -1,7 +1,9 @@
 import time
 
 #ok so does Program inherit all the other classes or does Account do
-
+# What is Account supposed to do??? Nothing is explained about it. I have no idea what its purpose is. Am I supposed to print it so the user can know the details of their account?
+#How do I get searchAccount() to run showAccountMenu()??
+#TODO figure that out
 
 class SavingsAccount:
 
@@ -34,7 +36,8 @@ class Bank():
         if (accountNum != 2):
             while (accountNum != 2):
                 if (accountNum == 2):
-                    print("")
+                    print("Account number verified. Proceeding to Account Menu......")
+                    time.sleep(2)
 
 class Program(Bank):
     def __init__(self):
@@ -76,7 +79,9 @@ class Program(Bank):
         print("")
 
     def run(self):
-        print("")
+        p = Program()
+        print(p.showMainMenu)
+        
 
 class Account(Program):
     def __init__(self,_accountNumber,_accountHolderName,_rateOfInterest,_currentBalance):
@@ -103,5 +108,5 @@ class Account(Program):
     def withdraw(self):
         print("")
 
-p = Program()
-print(p.showMainMenu())
+p2 = Program()
+print(p2.run())
