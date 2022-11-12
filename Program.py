@@ -21,6 +21,8 @@ import time
 #  BUT the problem is once im at the searchAccount, i cannot go back to showAccountMenu because it belongs to Program
 #  #BUT Program is above Bank and Bank is inheriting Program meaning i cannot use showAccountMenu. I could put them in separate modules and import them but that would get rid of the inheritance stuff so..
 #  therefore searchAccount is pointless. In the assignment, it says searchAccount and the Select Account are the same thing so im lost
+
+#I was considering adding a feature where after the user does something in an account, it'll ask them if they want to continue making changes to their account or would they like to return to the main menu or leave but not required for the assignment so scrapped it
 #--------------------------------------------------
 
 #----------------------Acount---------------------------------
@@ -44,7 +46,7 @@ class Account():
     def getCurrentBalance(self):
         return str(self.currentBalance)+" CAD"
 
-    def disposit(self):
+    def deposit(self):
         print("")
 
     def withdraw(self):
@@ -68,8 +70,9 @@ class Bank(Account):
         
         if (accountNum == 141):
             self.accountName = "Checquing Account"
+            self.ac = Account(141,"Soap",13,6700)
             self.a = 2
-            print("Account number verified. Proceeding to Account Menu......")
+            print("Account number verified. Proceeding to Account Menu......\n")
             time.sleep(2)
             #Program.showAccountMenu() 
             #not possible
@@ -138,7 +141,7 @@ class Program(Bank):
                 
     def showAccountMenu(self):
 
-        print("\nWelcome to your "+str(self.accountName))
+        print("\nWelcome to your "+str(self.accountName)+", "+str(self.ac.getAccountHolderName()))
         print("\nTo check your account balance, type 'BALANCE'\nTo deposit funds, type 'DEPOSIT'\nTo withdraw funds, type 'WITHDRAW'\nTo return to the main menu, type 'EXIT'\n")
 
         self.accountMenu = str(input("Enter your desired action: "))
@@ -147,32 +150,40 @@ class Program(Bank):
                 if (self.accountMenu.upper() == "WITHDRAW"):
                     while True: 
                       try:
-                         withdraws = int(input('What is the account number of the account you wish to enter?  '))
-                         if (withdraws <0):
+                         self.withdraws = int(input('What is the account number of the account you wish to enter?  '))
+                         if (self.withdraws > 0):
                            time.sleep(2) 
                            print("Withdrawal confirmed.....")
-                           self.balance[self.a] -=withdraws
+                           self.balance[self.a] -=self.withdraws
+                           print("Your new balance is: "+self.balance[self.a]+" CAD")
+                           print("Action complete. Shutting down...")
+                           quit()
                          break
                       except ValueError:
                          print('Not a valid value.\n')
                     break
 #----
                 elif(self.accountMenu.upper() == "DEPOSIT"):
-                    print("")
+                    while True: 
+                      try:
+                         self.deposits = int(input('What is the account number of the account you wish to enter?  '))
+                         if (self.deposits > 0):
+                           time.sleep(2) 
+                           print("Deposit confirmed.....")
+                           self.balance[self.a] +=self.deposits
+                           print("Your new balance is: "+self.balance[self.a]+" CAD")
+                           print("Action complete. Shutting down...")
+                           quit()
+                         break
+                      except ValueError:
+                         print('Not a valid value.\n')
+                    break
                     break
 #----
                 elif (self.accountMenu.upper() == "BALANCE"):
                     print("Your account balance: "+self.balance[self.a])
-                    while True:
-                        self._action = str(input("\nAction complete. Would you like to continue interacting with your account? "))
-                        if (self._action.upper() not in ('YES','Y','N','NO')):
-                            print("Please enter 'YES' or 'NO'")
-                        else:
-                            break
-                    if (self._action.upper() == "Y" or self._action.upper() == "YES"):
-                        break
-                    else:
-                        
+                    print("Action complete. Shutting down...")
+                    quit()
 
                 elif (self.accountMenu.upper() == "EXIT"):
                     print("Returning to main menu....")
@@ -191,8 +202,7 @@ class Program(Bank):
             print(p.showMainMenu())
             if (self.mainMenu.upper() == "SEARCH"):
                 print(p.showAccountMenu())
-            if (self._action.upper() == "Y" or self._action.upper() == "YES" ):
-                print(p.showAccountMenu)
+           
 
 #---------------Savings Account ---------------------------        
 class SavingsAccount(Account):
