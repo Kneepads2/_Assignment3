@@ -37,10 +37,10 @@ class Account():
         self.withdraws = 0
 
     def getAccountNumber(self): #Nothing in the assignment says the user decides the account number so im going to decide it
-        return "Account Number: "+self.accountNumber
+        return "Account Number: "+str(self.accountNumber)
 
     def getAccountHolderName(self):
-        return "Account Holder: "+self.accountHolderName
+        return "Account Holder: "+str(self.accountHolderName)
 
     def getRateOfInterest(self):
         return "The rate of interest: "+str(self.rateOfInterest)+ "%"
@@ -48,10 +48,10 @@ class Account():
     def getCurrentBalance(self):
         return "Your account balance: "+str(self.currentBalance)+" CAD"
 
-    def deposit(self):
+    def withdraw(self):
         while True: 
             try:
-                self.withdraws = int(input('What is the account number of the account you wish to enter?  '))
+                self.withdraws = int(input('\nHow much money would you like to withdraw?  '))
                 if (self.withdraws > 0):
                     time.sleep(2) 
                     print("Withdrawal confirmed.....")
@@ -63,16 +63,16 @@ class Account():
             except ValueError:
                 print('Not a valid value.\n')
 
-    def withdraw(self):
+    def deposit(self):
         while True: 
             try:
-                self.deposits = int(input('What is the account number of the account you wish to enter?  '))
+                self.deposits = int(input('\nHow much money would you like to deposit?  '))
                 if (self.deposits > 0):
                     time.sleep(2) 
                     print("Deposit confirmed.....")
                     self.currentBalance +=self.deposits
                     print("Your new balance is: "+str(self.currentBalance)+" CAD")
-                    print("Action complete. Shutting down...")
+                    print("Action complete. Shutting down...\n")
                     quit()
                 break
             except ValueError:
@@ -107,7 +107,7 @@ class Bank(Account):
 
 #--------PROGRAM------------------------------------------
 
-class Program(Bank):
+class Program(Bank,Account):
     def __init__(self):
         self.balance = [6000,7000,0,0,0]
         self.a = 0
@@ -122,7 +122,7 @@ class Program(Bank):
         self.mainMenu = str(input("Enter your desired action: "))
         if (self.mainMenu.upper() == "OPEN"):
             Bank.openAccount()
-            
+#------            
         elif (self.mainMenu.upper() == "SEARCH"):
             while True: 
                       try:
@@ -143,12 +143,12 @@ class Program(Bank):
                          break
                       except ValueError:
                          print('Unknown account number. Please try again.\n')
-            
+#-----            
         elif (self.mainMenu.upper() == "EXIT"):
             print("Exiting program.........")
             time.sleep(1.2)
             quit()
-
+#-----
         elif (self.mainMenu.upper() != "OPEN" or self.mainMenu.upper() != "SEARCH" or self.mainMenu.upper() != "EXIT"):
             while (self.mainMenu.upper() != "OPEN" or self.mainMenu.upper() != "SEARCH" or self.mainMenu.upper() != "EXIT"):
                 self.mainMenu = str(input("\nThat is not an action. Please enter a valid action: "))
@@ -176,43 +176,19 @@ class Program(Bank):
                     print("Exiting program.......")
                     time.sleep(1.2)
                     quit()
-                
+ #-----               
     def showAccountMenu(self):
 
-        print("\nWelcome, "+str(self.ac.getAccountHolderName()))
+        print("\n"+str(self.ac.getAccountHolderName())+"\n"+str(self.ac.getAccountNumber()))
         print("\nTo check your account balance, type 'BALANCE'\nTo deposit funds, type 'DEPOSIT'\nTo withdraw funds, type 'WITHDRAW'\nTo return to the main menu, type 'EXIT'\n")
 
         self.accountMenu = str(input("Enter your desired action: "))
 
         if(self.accountMenu.upper() == "DEPOSIT"):
-                    while True: 
-                      try:
-                         self.deposits = int(input('How much money would you like to deposit?   '))
-                         if (self.deposits > 0):
-                           time.sleep(2) 
-                           print("Deposit confirmed.....")
-                           self.balance[self.a] +=self.deposits
-                           print("Your new balance is: "+str(self.balance[self.a])+" CAD")
-                           print("Action complete. Shutting down...")
-                           quit()
-                         break
-                      except ValueError:
-                         print('Not a valid value.\n')
+                    self.ac.deposit()
 
         elif (self.accountMenu.upper() == "WITHDRAW"):
-                    while True: 
-                      try:
-                         self.withdraws = int(input('How much money would you like to withdraw?  '))
-                         if (self.withdraws > 0):
-                           time.sleep(2) 
-                           print("Withdrawal confirmed.....")
-                           self.balance[self.a] -=self.withdraws
-                           print("Your new balance is: "+str(self.balance[self.a])+" CAD")
-                           print("Action complete. Shutting down...")
-                           quit()
-                         break
-                      except ValueError:
-                         print('Not a valid value.\n')
+                    self.ac.withdraw()
 
         elif (self.accountMenu.upper() == "BALANCE"):
                     print(self.ac.getCurrentBalance())
@@ -224,40 +200,16 @@ class Program(Bank):
                     time.sleep(2)
                     self.showMainMenu()
 
-
+#--------
         elif (self.accountMenu.upper() != "EXIT" or self.accountMenu.upper() != "WITHDRAW" or self.accountMenu.upper() != "DEPOSIT" or self.accountMenu.upper() != "BALANCE"):
             while (self.accountMenu.upper() != "EXIT" or self.accountMenu.upper() != "WITHDRAW" or self.accountMenu.upper() != "DEPOSIT" or self.accountMenu.upper() != "BALANCE"):
                 self.accountMenu = str(input("Not a valid action. Please try again:  "))
                 if (self.accountMenu.upper() == "WITHDRAW"):
-                    while True: 
-                      try:
-                         self.withdraws = int(input('How much money would you like to withdraw?   '))
-                         if (self.withdraws > 0):
-                           time.sleep(2) 
-                           print("Withdrawal confirmed.....")
-                           self.balance[self.a] -=self.withdraws
-                           print("Your new balance is: "+str(self.balance[self.a])+" CAD")
-                           print("Action complete. Shutting down...")
-                           quit()
-                         break
-                      except ValueError:
-                         print('Not a valid value.\n')
+                    self.ac.withdraw()
                     break
 #----
                 elif(self.accountMenu.upper() == "DEPOSIT"):
-                    while True: 
-                      try:
-                         self.deposits = int(input('How much money would you like to deposit?  '))
-                         if (self.deposits > 0):
-                           time.sleep(2) 
-                           print("Deposit confirmed.....")
-                           self.balance[self.a] +=self.deposits
-                           print("Your new balance is: "+str(self.balance[self.a])+" CAD")
-                           print("Action complete. Shutting down...")
-                           quit()
-                         break
-                      except ValueError:
-                         print('Not a valid value.\n')
+                    self.ac.deposit()
                     break
                     
 #----
@@ -265,7 +217,7 @@ class Program(Bank):
                     print("Your account balance: "+str(self.balance[self.a]))
                     print("Action complete. Shutting down...")
                     quit()
-
+#-----
                 elif (self.accountMenu.upper() == "EXIT"):
                     print("Returning to main menu....")
                     time.sleep(2)
