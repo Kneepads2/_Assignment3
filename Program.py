@@ -52,12 +52,14 @@ class Account():
         while True: 
             try:
                 self.withdraws = float(input('\nHow much money would you like to withdraw?  '))
-                if (self.withdraws > 0):
+                if (self.deposits <0 or (self.currentBalance - self.withdraws) < 0):
+                    raise ValueError
+                elif (self.withdraws > 0):
                     time.sleep(2) 
                     print("Withdrawal confirmed.....")
                     self.currentBalance -=self.withdraws
                     print("Your new balance is: "+str(self.currentBalance)+" CAD")
-                    print("Action complete. Returning to account meny...")
+                    print("Action complete. Returning to account menu...")
         
                 break
             except ValueError:
@@ -80,7 +82,7 @@ class Account():
                     
                 break
             except ValueError:
-                print('Not a valid value.\n')
+                print('Not a valid value. Amount might be below zero or you\'re requesting to withdraw more than you have.\n')
 
 #--------------BANK---------------------------------------------------------------        
 class Bank(Account):
@@ -263,15 +265,22 @@ class Program(Bank,Account):
            
 
 #---------------Savings Account ---------------------------        
-class SavingsAccount(Account):
+class SavingsAccount(Program,Bank,Account):
 
     def __init__(self,_minimumBalance):
         self._minimumBalance = _minimumBalance
+        self.deposits_Savings = 0
+        self.withdraws_Savings = 0
 
-    def withdraw(self):
+    def withdraw_Savings(self):
         print("")
+
+    def deposit_Savings(self):
+        print("")
+
+
 #------------------- Checquing Account ---------------------------
-class ChecquingAccount(Account):
+class ChecquingAccount(Program,Bank,Account):
 
     def __init__(self,_overdraftAllowed):
         self._overdraftAllowed = _overdraftAllowed
