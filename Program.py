@@ -1,29 +1,6 @@
 import time
-#-----------------------------more accessible journal i guess
-#ok so does Program inherit all the other classes or does Account do
-# What is Account supposed to do??? Nothing is explained about it. I have no idea what its purpose is. Am I supposed to print it so the user can know the details of their account?
-#
-#TODO figure that out
-#class Bnana:
- #def init(self)
- #def poo(self,pay)
- 
- #class Hapr:
-  #def init(self)
-  #def re(self,pay2)
-   #self.pay2 =pay2
-   #self.tree = Salary(self.pay2)
-   
-#This is confusing. So ok this is what im doing. 
-#  Im going to run showself.mainMenu 
-#  then i will type in SEARCH which will take me to the method searchAccount from Bank
-#  then i will input an account number which will take me to showAccountMenu
-#  BUT the problem is once im at the searchAccount, i cannot go back to showAccountMenu because it belongs to Program
-#  #BUT Program is above Bank and Bank is inheriting Program meaning i cannot use showAccountMenu. I could put them in separate modules and import them but that would get rid of the inheritance stuff so..
-#  therefore searchAccount is pointless. In the assignment, it says searchAccount and the Select Account are the same thing so im lost
 
-#I was considering adding a feature where after the user does something in an account, it'll ask them if they want to continue making changes to their account or would they like to return to the main menu or leave but not required for the assignment so scrapped it
-#--------------------------------------------------
+#
 
 #----------------------Acount---------------------------------
 
