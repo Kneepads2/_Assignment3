@@ -35,6 +35,7 @@ class Account():
         self.currentBalance = _currentBalance
         self.deposits = 0
         self.withdraws = 0
+        
 
     def getAccountNumber(self): #Nothing in the assignment says the user decides the account number so im going to decide it
         return "Account Number: "+str(self.accountNumber)
@@ -84,25 +85,68 @@ class Account():
             except ValueError:
                 print('Not a valid value. Amount might be below zero or you\'re requesting to withdraw more than you have.\n')
 
+#---------------Savings Account ---------------------------        
+
+class SavingsAccount(Account):
+
+    def __init__(self,_minimumBalance,_currentBalance):
+        self._minimumBalance = _minimumBalance
+        
+        
+        self.deposits_Savings = 0
+        self.withdraws_Savings = 0
+
+    def withdraw_Savings(self):
+        print("")
+
+    def deposit_Savings(self):
+        print("")
+
+
+#------------------- Checquing Account ---------------------------
+class ChecquingAccount(Account):
+
+    def __init__(self,_overdraftAllowed):
+        self._overdraftAllowed = _overdraftAllowed
+
+    def withdraw(self):
+        print("")
+
 #--------------BANK---------------------------------------------------------------        
-class Bank(Account):
+class Bank(SavingsAccount,ChecquingAccount,Account):
     
     def __init__(self,_bankName):
         self._bankName = ["Savings Account","Checquing Account","","",""]
         self.name = _bankName
+        
         self.accountMenu = 2
         self.accountName = ""
         self.accountNum = 14
+        self.accountNumberList = [141,2022,777,2013,2077]
+        self.accountVerification = [0,0,0]
+        self.i = 0
+        self.a = 0
+        self.holderName = ["","",""]
+        self.accountType = ""
+        self.accounts = [SavingsAccount(5000,44000)]
+
+
 
 
     def openAccount(self):
-        print("")
+        print("-----------------------------\nAccount creation menu\n")
+        self.holderName[self.i] = str(input("Please enter your name: "))
+        print("Your account number is "+str(self.accountNumberList[self.i])+"\n")
+        time.sleep(3)
+        print("Sending you back to the main menu....\n------------------------------------")
+        self.accountVerification[self.i] = 1
+        self.i +=1
+
 
     def searchAccount(self,accountNum):
         self.accountNum = accountNum
         if (self.accountNum == 141):
             self.accountName = "Checquing Account"
-            self.ac = Account(141,"Soap",13,6700)
             self.a = 2
             print("Account number verified. Proceeding to Account Menu......\n")
             time.sleep(2)
@@ -110,44 +154,63 @@ class Bank(Account):
             #not possible
             return ""
 
-
 #--------PROGRAM------------------------------------------
 
-class Program(Bank,Account):
+class Program(Bank):
     def __init__(self):
         self.balance = [0,0,0,44000,20000]
-        self.a = 0
         self.mainMenu = ""
         self.accountMenu = ""
-        self.accountNum = 453215
+        self.accountNum = 0
         self.accountName = ""
-        self.bank = Bank("Poo")
+        self.accountVerification = [0,0,0]
+        self.bank = Bank("")
+        self.a = 0
+        
         self.ac = Account(141,"Soap",13,self.balance[self.a])
+        super(Program,self).__init__()
 
     def showMainMenu(self):
+        print(self.i)
         print("\nTo open a new account, type 'OPEN'\nTo enter an existing account, type 'SEARCH'\nTo exit the program, type 'EXIT'\n")
         self.mainMenu = str(input("Enter your desired action: "))
         if (self.mainMenu.upper() == "OPEN"):
-            Bank.openAccount()
+            if (self.i == 2):
+                self.showMainMenu()
+                print("You cannot have more than five accounts. Please try another action.")
+            else:
+                self.bank.openAccount()
+                self.showMainMenu()
+                self.accountVerification[self.i] = 1
+                self.i +=1
+
 #------            
         elif (self.mainMenu.upper() == "SEARCH"):
             while True: 
                       try:
                          self.accountNum = int(input('What is the account number of the account you wish to enter?  '))
-                         if (self.accountNum == 141 or self.accountNum == 2022 or self.accountNum == 777):
+                         if ((self.accountNum == 141 and self.accountVerification[self.i] == 1) or (self.accountNum == 2022 and self.accountVerification[self.i] == 1) or (self.accountNum == 777 and self.accountVerification[self.i] == 1) or self.accountNum == 2013 or self.accountNum == 2077):
                            print("Account number confirmed. Entering account.....")
                            time.sleep(2)
                            self.bank.searchAccount(self.accountNum)
-                           if (self.accountNum == 141):
-                            self.ac = Account(141,"Dylan",13,self.balance[self.a])
+                           if (self.accountNum == 141 and self.accountVerification[self.i] == 1):
                             self.a = 0
-                           elif (self.accountNum == 2022):
-                            self.ac = Account(2022,"Dylan",14,self.balance[self.a]) 
+                            self.ac = Account(141,"Dylan",13,self.balance[self.a])
+                            
+                            self.showAccountMenu()
+                           elif (self.accountNum == 2022 and self.accountVerification[self.i] == 1):
                             self.a = 1
-                           elif (self.accountNum == 777):
+                            self.ac = Account(2022,"Dylan",14,self.balance[self.a]) 
+                            self.showAccountMenu()
+                           elif (self.accountNum == 777 and self.accountVerification[self.i] == 1):
                             self.a = 2
                             self.ac = Account(777,"Dylan",10,self.balance[self.a]) 
-                           self.showAccountMenu()
+                            self.showAccountMenu()
+                           elif (self.accountNum == 2013):
+                            self.a = 3 
+                            self.ac = SavingsAccount(self.balance[self.a])
+                            
+                           
                          break
                       except ValueError:
                          print('Unknown account number. Please try again.\n')
@@ -161,7 +224,13 @@ class Program(Bank,Account):
             while (self.mainMenu.upper() != "OPEN" or self.mainMenu.upper() != "SEARCH" or self.mainMenu.upper() != "EXIT"):
                 self.mainMenu = str(input("\nThat is not an action. Please enter a valid action: "))
                 if (self.mainMenu.upper() == "OPEN"):
-                    
+                    if (self.i == 2):
+                        self.showMainMenu
+                        print("You cannot have more than five accounts. Please try another action.")
+                    else:
+                        self.bank.openAccount()
+                        self.showMainMenu
+                        self.i += 1
                     break
 
                 elif (self.mainMenu.upper() == "SEARCH"):
@@ -172,16 +241,18 @@ class Program(Bank,Account):
                            print("Account number confirmed. Entering account.....")
                            time.sleep(2)
                            self.bank.searchAccount(self.accountNum)
-                           if (self.accountNum == 141):
+                           if (self.accountNum == 141 and self.accountVerification[self.i] == 1):
                             self.ac = Account(141,"Dylan",13,self.balance[self.a])
                             self.a = 0
-                           elif (self.accountNum == 2022):
+                            self.showAccountMenu
+                           elif (self.accountNum == 2022 and self.accountVerification[self.i] == 1):
                             self.ac = Account(2022,"Dylan",14,self.balance[self.a]) 
                             self.a = 1
-                           elif (self.accountNum == 777):
+                            self.showAccountMenu
+                           elif (self.accountNum == 777 and self.accountVerification[self.i] == 1):
                             self.a = 2
                             self.ac = Account(777,"Dylan",10,self.balance[self.a]) 
-                           self.showAccountMenu()
+                            self.showAccountMenu()
                          break
                       except ValueError:
                          print('Unknown account number. Please try again.\n')
@@ -264,29 +335,6 @@ class Program(Bank,Account):
         return ""
            
 
-#---------------Savings Account ---------------------------        
-class SavingsAccount(Program,Bank,Account):
-
-    def __init__(self,_minimumBalance):
-        self._minimumBalance = _minimumBalance
-        self.deposits_Savings = 0
-        self.withdraws_Savings = 0
-
-    def withdraw_Savings(self):
-        print("")
-
-    def deposit_Savings(self):
-        print("")
-
-
-#------------------- Checquing Account ---------------------------
-class ChecquingAccount(Program,Bank,Account):
-
-    def __init__(self,_overdraftAllowed):
-        self._overdraftAllowed = _overdraftAllowed
-
-    def withdraw(self):
-        print("")
 
 
 p2 = Program()
