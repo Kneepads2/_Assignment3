@@ -3,17 +3,7 @@ import time
 #ok so does Program inherit all the other classes or does Account do
 # What is Account supposed to do??? Nothing is explained about it. I have no idea what its purpose is. Am I supposed to print it so the user can know the details of their account?
 #
-#TODO figure that out
-#class Bnana:
- #def init(self)
- #def poo(self,pay)
- 
- #class Hapr:
-  #def init(self)
-  #def re(self,pay2)
-   #self.pay2 =pay2
-   #self.tree = Salary(self.pay2)
-   
+#ok so you might've noticed but there are so many variables. A lot of them feel so unnecessary
 #This is confusing. So ok this is what im doing. 
 #  Im going to run showself.mainMenu 
 #  then i will type in SEARCH which will take me to the method searchAccount from Bank
@@ -199,13 +189,14 @@ class Bank(SavingsAccount,ChecquingAccount,Account):
         self.i = i
         self.a = a
         self.holderName = ["","",""]
-        self.accountType = ""
+        self.accountType = ["Standard account","Standard account","Standard account","Savings account","Checquing account"]
         self.accounts = [SavingsAccount(5000,44000,"Dylan")]
 
 
 
 
     def openAccount(self):
+        
         print("\n====================\nAccount creation menu\n")
         self.holderName[self.i] = str(input("Please enter your name: "))
         print("Your account number is "+str(self.accountNumberList[self.i])+"\n")
@@ -217,14 +208,12 @@ class Bank(SavingsAccount,ChecquingAccount,Account):
 
     def searchAccount(self,accountNum):
         self.accountNum = accountNum
-        if (self.accountNum == 141):
-            self.accountName = "Checquing Account"
-            self.a = 0
-            print("Account number verified. Proceeding to Account Menu......\n")
-            time.sleep(2)
-            #Program.showAccountMenu() 
-            #not possible
-            return ""
+        
+        print("Account number verified. Proceeding to Account Menu......\n")
+        time.sleep(2)
+        #Program.showAccountMenu() 
+        #not possible
+        return ""
 
 #--------PROGRAM------------------------------------------
 
@@ -353,7 +342,7 @@ class Program(Bank,SavingsAccount,ChecquingAccount):
  #-----   ------------------------            
     def showAccountMenu(self):
 
-        print("\n=========================================\nAccount Holder: Dylan\nAccount number: "+str(self.accountNumberList[self.a]))
+        print("\n=========================================\nAccount Holder: Dylan\nAccount number: "+str(self.accountNumberList[self.a])+"\nAccount Type: "+str(self.accountType[self.a]))
         print("\nTo check your account balance, type 'BALANCE'\nTo deposit funds, type 'DEPOSIT'\nTo withdraw funds, type 'WITHDRAW'\nTo return to the main menu, type 'EXIT'\n")
 
         self.accountMenu = str(input("Enter your desired action: "))
