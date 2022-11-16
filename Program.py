@@ -1,7 +1,4 @@
 import time
-
-#
-
 #----------------------Acount---------------------------------
 
 class Account():
@@ -92,17 +89,16 @@ class ChecquingAccount(Account):
 #--------------BANK---------------------------------------------------------------        
 class Bank(SavingsAccount,ChecquingAccount,Account):
     
-    def __init__(self,_bankName):
+    def __init__(self,a,i):
         self._bankName = ["Savings Account","Checquing Account","","",""]
-        self.name = _bankName
         
         self.accountMenu = 2
         self.accountName = ""
         self.accountNum = 14
         self.accountNumberList = [141,2022,777,2013,2077]
         self.accountVerification = [0,0,0]
-        self.i = 0
-        self.a = 0
+        self.i = i
+        self.a = a
         self.holderName = ["","",""]
         self.accountType = ""
         self.accounts = [SavingsAccount(5000,44000)]
@@ -111,7 +107,7 @@ class Bank(SavingsAccount,ChecquingAccount,Account):
 
 
     def openAccount(self):
-        print("-----------------------------\nAccount creation menu\n")
+        print("\n-----------------------------\nAccount creation menu\n")
         self.holderName[self.i] = str(input("Please enter your name: "))
         print("Your account number is "+str(self.accountNumberList[self.i])+"\n")
         time.sleep(3)
@@ -134,18 +130,17 @@ class Bank(SavingsAccount,ChecquingAccount,Account):
 #--------PROGRAM------------------------------------------
 
 class Program(Bank):
-    def __init__(self):
+    def __init__(self,a,i):
         self.balance = [0,0,0,44000,20000]
         self.mainMenu = ""
         self.accountMenu = ""
         self.accountNum = 0
         self.accountName = ""
         self.accountVerification = [0,0,0]
-        self.bank = Bank("")
-        self.a = 0
-        
+        self.bank = Bank(0,0)
+
+        Bank.__init__(self,a,i)
         self.ac = Account(141,"Soap",13,self.balance[self.a])
-        super(Program,self).__init__()
 
     def showMainMenu(self):
         print(self.i)
@@ -173,16 +168,18 @@ class Program(Bank):
                            if (self.accountNum == 141 and self.accountVerification[self.i] == 1):
                             self.a = 0
                             self.ac = Account(141,"Dylan",13,self.balance[self.a])
-                            
                             self.showAccountMenu()
+
                            elif (self.accountNum == 2022 and self.accountVerification[self.i] == 1):
                             self.a = 1
                             self.ac = Account(2022,"Dylan",14,self.balance[self.a]) 
                             self.showAccountMenu()
+
                            elif (self.accountNum == 777 and self.accountVerification[self.i] == 1):
                             self.a = 2
                             self.ac = Account(777,"Dylan",10,self.balance[self.a]) 
                             self.showAccountMenu()
+
                            elif (self.accountNum == 2013):
                             self.a = 3 
                             self.ac = SavingsAccount(self.balance[self.a])
@@ -219,17 +216,18 @@ class Program(Bank):
                            time.sleep(2)
                            self.bank.searchAccount(self.accountNum)
                            if (self.accountNum == 141 and self.accountVerification[self.i] == 1):
-                            self.ac = Account(141,"Dylan",13,self.balance[self.a])
                             self.a = 0
-                            self.showAccountMenu
+                            self.ac = Account(141,"Dylan",13,self.balance[self.a])
+                            self.showAccountMenu()
                            elif (self.accountNum == 2022 and self.accountVerification[self.i] == 1):
-                            self.ac = Account(2022,"Dylan",14,self.balance[self.a]) 
                             self.a = 1
-                            self.showAccountMenu
+                            self.ac = Account(2022,"Dylan",14,self.balance[self.a]) 
+                            self.showAccountMenu()
                            elif (self.accountNum == 777 and self.accountVerification[self.i] == 1):
                             self.a = 2
                             self.ac = Account(777,"Dylan",10,self.balance[self.a]) 
                             self.showAccountMenu()
+
                          break
                       except ValueError:
                          print('Unknown account number. Please try again.\n')
@@ -305,8 +303,9 @@ class Program(Bank):
 
 
     def run(self):
-        p = Program()
-               
+
+        p = Program(0,0)
+        print("Welcome to the Official Bank of Dylan\n---------------------\n")       
         print(p.showMainMenu())
             
         return ""
@@ -314,5 +313,5 @@ class Program(Bank):
 
 
 
-p2 = Program()
+p2 = Program(0,0)
 print(p2.run())
