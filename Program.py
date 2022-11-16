@@ -22,6 +22,7 @@ import time
 #  #BUT Program is above Bank and Bank is inheriting Program meaning i cannot use showAccountMenu. I could put them in separate modules and import them but that would get rid of the inheritance stuff so..
 #  therefore searchAccount is pointless. In the assignment, it says searchAccount and the Select Account are the same thing so im lost
 
+# i realize that i couldve added the saving and checquing accounts into Account but then what would be the point of the ChecuqingAccount and SavingsAccount? It could just for initializing but theres no point then
 #I was considering adding a feature where after the user does something in an account, it'll ask them if they want to continue making changes to their account or would they like to return to the main menu or leave but not required for the assignment so scrapped it
 #--------------------------------------------------
 
@@ -89,8 +90,9 @@ class Account():
 
 class SavingsAccount(Account):
 
-    def __init__(self,_minimumBalance,_accountHolderSaving,_accountNumSaving):
+    def __init__(self,_minimumBalance,_accountNumSaving,currentBalSaving):
         self._minimumBalance = _minimumBalance
+        self.currentBalSaving = currentBalSaving
         
         
         self.deposits_Savings = 0
@@ -101,13 +103,14 @@ class SavingsAccount(Account):
         while True: 
             try:
                 self.withdraws_Savings = float(input('\nHow much money would you like to withdraw?  '))
-                if (self.withdraws_Savings <0 or (self.currentBalance - self.withdraws_Savings) < self._minimumBalance):
+                if (self.withdraws_Savings <0 or (self.currentBalSaving - self.withdraws_Savings) < self._minimumBalance):
+                    print("Account balance must always remain above 5000 CAD.")
                     raise ValueError
                 elif (self.withdraws_Savings > 0):
                     time.sleep(2) 
                     print("Withdrawal confirmed.....")
-                    self.currentBalance -=self.withdraws_Savings
-                    print("Your new balance is: "+str(self.currentBalance)+" CAD")
+                    self.currentBalSaving -=self.withdraws_Savings
+                    print("Your new balance is: "+str(self.currentBalSaving)+" CAD")
                     print("Action complete. Returning to account menu...")
         
                 break
@@ -138,22 +141,23 @@ class SavingsAccount(Account):
 #------------------- Checquing Account ---------------------------
 class ChecquingAccount(Account):
 
-    def __init__(self,_overdraftAllowed,_accountHolderChecque,_accountNumChecque):
+    def __init__(self,_overdraftAllowed,_accountNumChecque,_accountBalChecque):
         self._overdraftAllowed = _overdraftAllowed
         self.deposits_Checque = 0
+        self.accountBalCheque = _accountBalChecque
         self.withdraws_Checque = 0
 
     def withdraw_Checque(self):
         while True: 
             try:
                 self.withdraws_Checque = float(input('\nHow much money would you like to withdraw?  '))
-                if (self.withdraws_Checque <0 or (self.currentBalance - self.withdraws_Checque) < self._overdraftAllowed):
+                if (self.withdraws_Checque <0 or (self.accountBalCheque - self.withdraws_Checque) < self._overdraftAllowed):
                     raise ValueError
                 elif (self.withdraws_Checque > 0):
                     time.sleep(2) 
                     print("Withdrawal confirmed.....")
-                    self.currentBalance -=self.withdraws_Checque
-                    print("Your new balance is: "+str(self.currentBalance)+" CAD")
+                    self.accountBalCheque -=self.withdraws_Checque
+                    print("Your new balance is: "+str(self.accountBalCheque)+" CAD")
                     print("Action complete. Returning to account menu...")
         
                 break
@@ -171,8 +175,8 @@ class ChecquingAccount(Account):
                 elif (self.deposits_Checque > 0):
                     time.sleep(2) 
                     print("Deposit confirmed.....")
-                    self.currentBalance +=self.deposits_Checque
-                    print("Your new balance is: "+str(self.currentBalance)+" CAD")
+                    self.accountBalCheque +=self.deposits_Checque
+                    print("Your new balance is: "+str(self.accountBalCheque)+" CAD")
                     print("Action complete. Returning to account menu...\n")
                     
                 break
@@ -186,9 +190,10 @@ class Bank(SavingsAccount,ChecquingAccount,Account):
         self._bankName = ["Savings Account","Checquing Account","","",""]
         
         self.accountMenu = 2
-        self.accountName = ""
+        self.accountName = "Dylan"
         self.accountNum = 14
         self.accountNumberList = [141,2022,777,2013,2077]
+        self.accountROI = [13,14,10,11,12]
 
         self.accountVerification = [0,0,0]
         self.i = i
@@ -270,14 +275,15 @@ class Program(Bank,SavingsAccount,ChecquingAccount):
 
                            elif (self.accountNum == 2013):
                             self.a = 3 
-                            self.ac = SavingsAccount(5000,self.balance[self.a])
+                            self.ac = SavingsAccount(5000,self.accountNumberList[self.a],self.balance[self.a])
                             self.showAccountMenu()
 
                            elif (self.accountNum == 2077):
                             self.a = 4 
-                            self.ac = ChecquingAccount(-5000)
+                            self.ac = ChecquingAccount(-5000,self.accountNumberList[self.a],self.balance[self.a])
                             self.showAccountMenu()
-                    
+                         else:
+                            raise ValueError 
                            
                          break
                       except ValueError:
@@ -323,12 +329,14 @@ class Program(Bank,SavingsAccount,ChecquingAccount):
                             self.showAccountMenu()
                            elif (self.accountNum == 2013):
                             self.a = 3 
-                            self.ac = SavingsAccount(5000,self.balance[self.a])
+                            self.ac = SavingsAccount(5000,self.accountNumberList[self.a],self.balance[self.a])
                             self.showAccountMenu()
                            elif (self.accountNum == 2077):
                             self.a = 4 
-                            self.ac = ChecquingAccount(-5000)
+                            self.ac = ChecquingAccount(-5000,self.accountNumberList[self.a],self.balance[self.a])
                             self.showAccountMenu()
+                         else:
+                            raise ValueError 
 
                          break
                       except ValueError:
@@ -345,7 +353,7 @@ class Program(Bank,SavingsAccount,ChecquingAccount):
  #-----   ------------------------            
     def showAccountMenu(self):
 
-        print("\n=========================================\n"+str(Account.getAccountHolderName())+"\nAccount number: "+str(self.accountNumberList[self.a]))
+        print("\n=========================================\nAccount Holder: Dylan\nAccount number: "+str(self.accountNumberList[self.a]))
         print("\nTo check your account balance, type 'BALANCE'\nTo deposit funds, type 'DEPOSIT'\nTo withdraw funds, type 'WITHDRAW'\nTo return to the main menu, type 'EXIT'\n")
 
         self.accountMenu = str(input("Enter your desired action: "))
@@ -354,7 +362,7 @@ class Program(Bank,SavingsAccount,ChecquingAccount):
                     if (self.accountNum == 2013):
                         self.ac.deposit_Savings()
                         time.sleep(3)
-                        self.showAccountMenu
+                        self.showAccountMenu()
                     elif (self.accountNum == 2077):
                         self.ac.deposit_Checque()
                         time.sleep(3)
@@ -368,19 +376,21 @@ class Program(Bank,SavingsAccount,ChecquingAccount):
                     if (self.accountNum == 2013):
                         self.ac.withdraw_Savings()
                         time.sleep(3)
-                        self.showAccountMenu
+                        self.showAccountMenu()
                     elif (self.accountNum == 2077):
                         self.ac.withdraw_Checque()
                         time.sleep(3)
-                        self.showAccountMenu
+                        self.showAccountMenu()
                     else:
                         self.ac.withdraw()
                         time.sleep(3)
                         self.showAccountMenu()
 
         elif (self.accountMenu.upper() == "BALANCE"):
-                    print(self.ac.getCurrentBalance())
-                    print(self.ac.getRateOfInterest())
+                
+                    print(Account(self.accountNumberList[self.a],self.accountName,self.accountROI[self.a],self.balance[self.a]).getCurrentBalance())
+                    print(Account(self.accountNumberList[self.a],self.accountName,self.accountROI[self.a],self.balance[self.a]).getRateOfInterest())  
+                    
                     time.sleep(3)
                     print("Action complete. Returning to account menu...")
                     self.showAccountMenu()
