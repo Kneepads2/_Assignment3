@@ -16,6 +16,7 @@ class Account:
     def __init__(self,accountNum,accountBal,accountBal2,accountName,accountROI,savings,chequing):
         self.accountNum = accountNum
         self.accountBal = accountBal
+        self.accountBal2 = accountBal2
         self.accountName = accountName
         self.accountROI = accountROI
         self.savings = savings
@@ -25,7 +26,7 @@ class Account:
         return ""
         
     def getBalance(self):
-        return "Current balance in Savings Account: {:.2f}".format(accountBalSavings[self.a]) + " CAD\nCurrent balance in Chequing Account: {:.2f}".format(accountBalChequing[self.a]) + " CAD"
+        return "Current balance in Savings Account: {:.2f}".format(self.accountBal) + " CAD\nCurrent balance in Chequing Account: {:.2f}".format(self.accountBal2) + " CAD"
     
     def getRateOfInterest(self):
         return "Account's rate of interest: "+str(self.accountROI)+ "%"
@@ -67,8 +68,35 @@ class Account:
                     break
 
     def withdraw(self):
-        amount = int(input("How much would you like to withdraw?  "))
         accountType = str(input("Which account are you withdrawing from? Savings or Chequing?  "))
+        if (accountType.upper() == "SAVINGS"):
+            print(self.savings.withdrawSavings())
+
+        elif (accountType.upper() == "CHEQUING"):
+            print(self.chequing.withdrawChequing())
+
+        elif (accountType.upper() != "SAVINGS" or accountType.upper() != "CHEQUING"):
+            while (accountType.upper() != "SAVINGS" or accountType.upper() != "CHEQUING"):
+                accountType = str(input("That is not an option. Are you depositing into SAVINGS or CHEQUING?  "))
+                
+                if (accountType.upper() == "SAVINGS"):
+                    print(self.savings.withdrawSavings())
+                    break
+                elif (accountType.upper() == "CHEQUING"):
+                    print(self.chequing.withdrawChequing())
+                    break
+        while True: 
+            try:
+                amount = float(input('\nHow much money would you like to withdraw?  '))
+                if (amount <0):
+                    print("Cannot deposit negative amounts.")
+                    raise ValueError
+                    
+                elif (amount > 0):
+                    time.sleep(2)   
+                break
+            except ValueError:
+                print('Cannot deposit this amount.\n')
         
         
 
@@ -78,14 +106,18 @@ class SavingsAccount(Account):
         self.minimumBalance = minimumBalance
 
     def withdrawSavings(self):
-        print("")
+        print("it work")
         
 class ChequingAccount(Account):
     def __init__(self,overdraftLimit):
         self.overdrarftLimit = overdraftLimit
 
+    def withdrawChequing(self):
+        print("it does mhm")
+
 account1 = Account(123,5000,5000,"Dylan",12,SavingsAccount(5000),ChequingAccount(5000))
-accountList = [account1]
+account2 = Account(777,0,0,"",5,SavingsAccount(5000),ChequingAccount(5000))
+accountList = [account1,account2]
      
 class Bank(Account):
     
@@ -184,20 +216,20 @@ class Program(Bank,Account):
         self.accountMenu = str(input("Enter your desired action: "))
 
         if(self.accountMenu.upper() == "DEPOSIT"):
-                    Account(accountNumberList[self.a],accountBalSavings[self.a],accountBalChequing[self.a],accountName[self.a],accountROI[self.a],SavingsAccount(5000),ChequingAccount(5000)).deposit()
+                    accountList[self.a].deposit()
                     time.sleep(3)
                     self.showAccountMenu()
 
         elif (self.accountMenu.upper() == "WITHDRAW"):
                     
-                    Account(accountNumberList[self.a],accountBalSavings[self.a],accountBalChequing[self.a],accountName[self.a],accountROI[self.a],SavingsAccount(5000),ChequingAccount(5000)).withdraw()
+                    accountList[self.a].withdraw()
                     time.sleep(3)
                     self.showAccountMenu()
 
         elif (self.accountMenu.upper() == "BALANCE"):
                 
-                    print(Account(accountNumberList[self.a],accountBalSavings[self.a],accountBalChequing[self.a],accountName[self.a],accountROI[self.a],SavingsAccount(5000),ChequingAccount(5000)).getBalance())
-                    print(Account(accountNumberList[self.a],accountBalSavings[self.a],accountBalChequing[self.a],accountName[self.a],accountROI[self.a],SavingsAccount(5000),ChequingAccount(5000)).getRateOfInterest())  
+                    print(accountList[self.a].getBalance())
+                    print(accountList[self.a].getRateOfInterest())
                     
                     time.sleep(3)
                     print("Action complete. Returning to account menu...")
@@ -220,15 +252,14 @@ class Program(Bank,Account):
                     break
 #----
                 elif(self.accountMenu.upper() == "DEPOSIT"):
-                    Account(accountNumberList[self.a],accountBalSavings[self.a],accountBalChequing[self.a],accountName[self.a],accountROI[self.a],SavingsAccount(5000),ChequingAccount(5000)).deposit()
+                    accountList[self.a].deposit()
                     time.sleep(3)
                     self.showAccountMenu()
                     break   
 #----
                 elif (self.accountMenu.upper() == "BALANCE"):
-                    print(Account(accountNumberList[self.a],accountBalSavings[self.a],accountBalChequing[self.a],accountName[self.a],accountROI[self.a],SavingsAccount(5000),ChequingAccount(5000)).getBalance())
-                    print(Account(accountNumberList[self.a],accountBalSavings[self.a],accountBalChequing[self.a],accountName[self.a],accountROI[self.a],SavingsAccount(5000),ChequingAccount(5000)).getRateOfInterest())
-                    time.sleep(3)
+                    print(accountList[self.a].getBalance())
+                    print(accountList[self.a].getRateOfInterest())
                     self.showAccountMenu()
                     break
 #-----
