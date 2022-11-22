@@ -102,7 +102,7 @@ class Account:
                         print("Cannot withdraw negative amounts.")
                         raise ValueError
                 
-                    elif ((self.accountBal2 - amount) < (self.chequing + self.accountBal2)):
+                    elif ((self.accountBal2 + amount) < (self.chequing + self.accountBal2)):
                         print("Account balance cannot go below {:.2f}".format(0 - self.chequing)+" CAD")
                         raise ValueError
                     
@@ -147,7 +147,7 @@ class Account:
                                 print("Cannot withdraw negative amounts.")
                                 raise ValueError
                 
-                            elif ((accountBalChequing[self.a] - amount) < (self.chequing + accountBalChequing[self.a])):
+                            elif ((accountBalChequing[self.a] + amount) < (self.chequing + accountBalChequing[self.a])):
                                 print("Account balance cannot go below {:.2f}".format(0 - self.chequing)+" CAD")
                                 raise ValueError
                     
