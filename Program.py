@@ -1,5 +1,6 @@
 import time
 
+#PLEASE NOTE: The only two account numbers that work are 123 and 777 (when you create a new account)
 
 accountNumberList = [123,777,2022,2013,141] #a list of my chosen account numbers, the user cannot choose their own account number
 accountNumberListLength = len(accountNumberList) - 1 #length of that list
@@ -281,7 +282,7 @@ class Program(Bank,Account):
                              
                       except ValueError:
                          print('Unknown account number. Please try again.\n')
-                      break  
+                      
 #-----            
         elif (self.mainMenu.upper() == "EXIT"):
             print("Exiting program.........")
@@ -315,7 +316,7 @@ class Program(Bank,Account):
 
                       except ValueError:
                          print('Unknown account number. Please try again.\n')
-                      break
+                      
 
                 elif (self.mainMenu.upper() == "HELP"):
                     print("\nTo open a new account, type 'OPEN'\nTo enter an existing account, type 'SEARCH'\nTo exit the program, type 'EXIT'\n")
