@@ -234,8 +234,6 @@ class Bank(Account):
         time.sleep(3)
         accountCreated[self.i] = 1
         
-        print(self.i)
-        
 
     def searchAccount(self):
         self.a = 0
